@@ -23,6 +23,19 @@ builder.Services.AddDbContext<StoreContext>(options =>
 
 var app = builder.Build();
 
+//se crea este metodo para poder insertar los datos en la base de datos
+//cuando arranca el programa, se manda llamar el metodo static SeedAsync de la clase StoreContextSeed
+
+using(var scope = app.Services.CreateAsyncScope())
+{
+    var services = scope.ServiceProvider;
+    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+    var context = services.GetRequiredService<StoreContext>();
+    await StoreContextSeed.SeedAsync(context,loggerFactory);
+
+
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

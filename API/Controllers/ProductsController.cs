@@ -17,7 +17,8 @@ namespace API.Controllers
         
         private readonly IProductRepository repo;
 
-        public ProductsController(IProductRepository repo)
+        //Se hace la injeccion de dependencias del repositorio el cual tiene la relacion con el  DbContext
+        public ProductsController( IProductRepository repo )
         {
             this.repo = repo;
            
@@ -35,6 +36,20 @@ namespace API.Controllers
         {
            return await repo.GetProductByIdAsync(id);
            
+        }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<List<ProductBrand>>> getProductBrands()
+        {
+            var brands =  await repo.GetProductBrandAsync();
+            return Ok(brands);
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<List<ProductBrand>>> getProductTypes()
+        {
+            var types =  await repo.GetProductTypesAsync();
+            return Ok(types);
         }
         
     }
