@@ -8,6 +8,8 @@ namespace Infrastructure.Data
     public class StoreContextSeed
     {
 
+        //Este metodo sirve para insertar los registros en las tablas desde un archivo JSON
+
         public static async Task SeedAsync(StoreContext context, ILoggerFactory loggerFactory)
         {
 

@@ -1,4 +1,5 @@
 
+using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 //se injecta el repositorio
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+//se injecta el repositorio Generico
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+//se injecta el servicio de Automapper
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -43,7 +50,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+//se pone el middleware para poder leer las imagenes
+app.UseStaticFiles();
+
+
 app.UseHttpsRedirection();
+
+
 
 app.UseAuthorization();
 
