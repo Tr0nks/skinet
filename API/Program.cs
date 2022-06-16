@@ -1,5 +1,6 @@
 
 using API.Helpers;
+using API.Middleware;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -43,15 +44,21 @@ using(var scope = app.Services.CreateAsyncScope())
 
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 //se pone el middleware para poder leer las imagenes
 app.UseStaticFiles();
+
+//se coloca este middleware para controlar el controller de errores,
+//para cuando no pone un endpoint que no existe
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 
 app.UseHttpsRedirection();
