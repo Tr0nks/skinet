@@ -23,6 +23,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//se configura el CORS
+
+builder.Services.AddCors(opt => 
+{
+    opt.AddPolicy("CorsPolicy", policy => {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+    });
+});
+
+
 //Se hace la injeccion de dependencias del DbContext
 
 
@@ -63,7 +73,8 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
-
+//se aplica el Middleware para el CORs
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 
